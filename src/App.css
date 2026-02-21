@@ -4,3 +4,12 @@
   align-items: center;
   margin: 25px;
 }
+
+.tableContainer {
+  margin-top: 20px;
+  border: 1px solid black;
+}
+
+.paddingText {
+  padding: 10px;
+}
