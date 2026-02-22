@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 
 import Papa from 'papaparse';
 
@@ -14,7 +14,7 @@ import { EmployeesState } from './state/employees-state';
 
 import './App.css';
 
-export function App() {
+export function App(): JSX.Element {
     let [employeesState, setEmployeesState] = useState<EmployeesState>();
 
     const uploadFileAndSetData = (event: React.ChangeEvent<HTMLInputElement>): void => {
