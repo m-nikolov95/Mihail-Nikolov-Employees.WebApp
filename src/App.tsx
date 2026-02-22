@@ -62,12 +62,14 @@ export function App(): JSX.Element {
 
                     let daysWorkedTogether = calculateOnProjectDaysWorkedTogether(employees[i], employees[j]);
 
-                    employeesWhoWorkedTogether.push({
-                        projectId: projectId,
-                        firstEmployee: employees[i],
-                        secondEmployee: employees[j],
-                        daysWorkedOnProjectTogether: daysWorkedTogether
-                    });
+                    if (daysWorkedTogether > 0) {
+                        employeesWhoWorkedTogether.push({
+                            projectId: projectId,
+                            firstEmployee: employees[i],
+                            secondEmployee: employees[j],
+                            daysWorkedOnProjectTogether: daysWorkedTogether
+                        });
+                    }
                 }
             }
         }
@@ -77,9 +79,9 @@ export function App(): JSX.Element {
     }
 
     const calculateOnProjectDaysWorkedTogether = (employeeOne: Employee, employeeTwo: Employee): number => {
-        let millisecondsInSecond = 1000;
-        let secondsInHour = 3600;
-        let hoursInDay = 24;
+        const millisecondsInSecond = 1000;
+        const secondsInHour = 3600;
+        const hoursInDay = 24;
 
         let employeeOneStartDate = parseDate(employeeOne.DateFrom);
         let employeeOneEndDate = employeeOne.DateTo ? parseDate(employeeOne.DateTo) : new Date();
@@ -126,7 +128,7 @@ export function App(): JSX.Element {
 
         let maxDaysFromTeam = Math.max(...employeeTeamWithMostDays.map(employeeTeam => employeeTeam.totalDaysWorkedTogether));
 
-        return employeeTeamWithMostDays.filter(employeeTeam => employeeTeam.totalDaysWorkedTogether === maxDaysFromTeam);;
+        return employeeTeamWithMostDays.filter(employeeTeam => employeeTeam.totalDaysWorkedTogether === maxDaysFromTeam);
     }
 
     return (
@@ -140,28 +142,29 @@ export function App(): JSX.Element {
                 employeesState?.collaboratingEmployees !== null &&
                     employeesState?.collaboratingEmployees !== undefined &&
                     employeesState.collaboratingEmployees.length > 0 ?
-                    employeesState.collaboratingEmployees.map((team, index) => (
-                        <div key={index} className='tableContainer'>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th className='paddingText'>Employee ID #1</th>
-                                        <th className='paddingText'>Employee ID #2</th>
-                                        <th className='paddingText'>Project ID</th>
-                                        <th className='paddingText'>Days worked</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr key={index}>
-                                        <td className='paddingText'>{team.firstEmployee.EmployeeId}</td>
-                                        <td className='paddingText'>{team.secondEmployee.EmployeeId}</td>
-                                        <td className='paddingText'>{team.projectId}</td>
-                                        <td className='paddingText'>{team.daysWorkedOnProjectTogether}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    )) :
+                    <div className='tableContainer'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th className='paddingText'>Employee ID #1</th>
+                                    <th className='paddingText'>Employee ID #2</th>
+                                    <th className='paddingText'>Project ID</th>
+                                    <th className='paddingText'>Days worked</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    employeesState.collaboratingEmployees.map((team, index) => (
+                                        <tr key={index}>
+                                            <td className='paddingText'>{team.firstEmployee.EmployeeId}</td>
+                                            <td className='paddingText'>{team.secondEmployee.EmployeeId}</td>
+                                            <td className='paddingText'>{team.projectId}</td>
+                                            <td className='paddingText'>{team.daysWorkedOnProjectTogether}</td>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                    </div> :
                     <></>
             }
         </div>
